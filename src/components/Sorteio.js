@@ -98,7 +98,7 @@ function Sorteio() {
   };
 
   const copiarInformacoes = async (participante, index) => {
-    const baseUrl = window.location.origin;
+    const baseUrl = window.location.origin + '/amigo-secreto-natal/#';
     const link = `${baseUrl}/resultado/${participante.hash}`;
     const textoCopiar = `Nome: ${participante.nome}\nLink: ${link}`;
     
@@ -116,7 +116,7 @@ function Sorteio() {
   };
 
   if (sorteioRealizado) {
-    const baseUrl = window.location.origin;
+    const baseUrl = window.location.origin + '/amigo-secreto-natal/#';
     
     return (
       <div>
@@ -126,7 +126,8 @@ function Sorteio() {
         <LinksList>
           {resultadoSorteio.map((participante, index) => (
             <LinkItem key={index}>
-              <strong>{participante.nome}</strong>
+              <strong>{participante.nome}:</strong>
+              <br />
               <LinkText>
                 {`${baseUrl}/resultado/${participante.hash}`}
               </LinkText>
