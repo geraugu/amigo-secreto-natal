@@ -33,7 +33,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <Router>
+      <Router basename="/amigo-secreto-natal">
         <AppContainer>
           <Routes>
             <Route path="/" element={<Registro />} />
