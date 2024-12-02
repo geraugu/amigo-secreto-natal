@@ -65,11 +65,6 @@ const LinkText = styled.code`
   margin: 8px 0;
 `;
 
-const CopyStatus = styled.span`
-  color: #4ecdc4;
-  margin-left: 10px;
-  font-size: 14px;
-`;
 
 function Sorteio() {
   const [participantes, setParticipantes] = useState([]);
