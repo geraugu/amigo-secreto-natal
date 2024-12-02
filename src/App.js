@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import Registro from './components/Registro';
 import Sorteio from './components/Sorteio';
 import ResultadoAmigo from './components/ResultadoAmigo';
@@ -33,7 +33,7 @@ function App() {
   return (
     <>
       <GlobalStyle />
-      <Router basename="/amigo-secreto-natal">
+      <Router>
         <AppContainer>
           <Routes>
             <Route path="/" element={<Registro />} />
