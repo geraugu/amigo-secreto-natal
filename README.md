@@ -1,70 +1,102 @@
-# Getting Started with Create React App
+# 🎄 Amigo Secreto de Natal
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Uma aplicação web moderna para organizar sorteios de Amigo Secreto de forma fácil e divertida!
 
-## Available Scripts
+## 🎯 Funcionalidades
 
-In the project directory, you can run:
+- **Cadastro de Participantes**
+  - Adicione participantes apenas com o nome
+  - Interface simples e intuitiva
+  - Mínimo de 2 participantes para realizar o sorteio
 
-### `npm start`
+- **Sorteio Automático**
+  - Sorteio aleatório e justo
+  - Garante que ninguém tire a si mesmo
+  - Gera links únicos para cada participante
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Compartilhamento Seguro**
+  - Links individuais e únicos para cada participante
+  - Botão de cópia rápida para nome e link
+  - Acesso ao resultado de qualquer dispositivo
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **Armazenamento em Nuvem**
+  - Dados salvos com segurança no Firebase
+  - Resultados acessíveis a qualquer momento
+  - Não depende do navegador ou dispositivo original
 
-### `npm test`
+## 🚀 Como Usar
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Acesse a Aplicação**
+   - Visite: [https://geraugu.github.io/amigo-secreto-natal](https://geraugu.github.io/amigo-secreto-natal)
 
-### `npm run build`
+2. **Cadastre os Participantes**
+   - Clique em "Adicionar Participante"
+   - Digite o nome do participante
+   - Repita para todos os participantes
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. **Realize o Sorteio**
+   - Com todos cadastrados, clique em "Realizar Sorteio"
+   - Aguarde o processamento
+   - Os links serão gerados automaticamente
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. **Compartilhe os Links**
+   - Use o botão "Copiar Informações" para cada participante
+   - Envie o link individualmente para cada pessoa
+   - Cada participante só verá seu próprio amigo secreto
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🛠️ Configuração Local
 
-### `npm run eject`
+1. Clone o repositório
+   ```bash
+   git clone https://github.com/geraugu/amigo-secreto-natal.git
+   cd amigo-secreto-natal
+   ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. Instale as dependências
+   ```bash
+   npm install
+   ```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Configure as variáveis de ambiente
+   - Copie o arquivo `.env.example` para `.env`
+   - Preencha as variáveis com suas credenciais do Firebase
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+4. Execute o projeto
+   ```bash
+   npm start
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 💻 Tecnologias Utilizadas
 
-## Learn More
+- React.js
+- Firebase (Firestore)
+- React Router
+- Styled Components
+- GitHub Pages
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🔒 Privacidade e Segurança
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Apenas nomes são armazenados
+- Links únicos e seguros
+- Sem necessidade de login
+- Dados protegidos no Firebase
 
-### Code Splitting
+## 🤝 Como Contribuir
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
+3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
+4. Push para a branch (`git push origin feature/AmazingFeature`)
+5. Abra um Pull Request
 
-### Analyzing the Bundle Size
+## 📝 Licença
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-### Making a Progressive Web App
+## 👥 Autor
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- [Augusto Gehrke](https://github.com/geraugu)
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Feito com ❤️ para tornar os sorteios de Amigo Secreto mais divertidos!

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { buscarResultadoPorHash } from '../services/sorteioService';
 
 const ResultadoContainer = styled.div`
   background-color: #f0f4f8;
@@ -17,21 +18,52 @@ const AmigoSecreto = styled.div`
   margin-top: 20px;
 `;
 
+const LoadingMessage = styled.div`
+  color: #666;
+  margin: 20px 0;
+`;
+
 function ResultadoAmigo() {
   const [amigoSecreto, setAmigoSecreto] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState(null);
   const { hash } = useParams();
 
   useEffect(() => {
-    const resultadoSorteio = JSON.parse(localStorage.getItem('resultadoSorteio') || '[]');
-    const participanteEncontrado = resultadoSorteio.find(p => p.hash === hash);
-    
-    if (participanteEncontrado) {
-      setAmigoSecreto(participanteEncontrado.amigoSecreto);
-    }
+    const buscarAmigo = async () => {
+      try {
+        const resultado = await buscarResultadoPorHash(hash);
+        if (resultado) {
+          setAmigoSecreto(resultado.amigoSecreto);
+        } else {
+          setErro('Resultado não encontrado');
+        }
+      } catch (error) {
+        console.error('Erro ao buscar resultado:', error);
+        setErro('Erro ao buscar o resultado');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    buscarAmigo();
   }, [hash]);
 
-  if (!amigoSecreto) {
-    return <div>Link inválido ou sorteio não realizado</div>;
+  if (loading) {
+    return (
+      <ResultadoContainer>
+        <LoadingMessage>Carregando seu amigo secreto...</LoadingMessage>
+      </ResultadoContainer>
+    );
+  }
+
+  if (erro || !amigoSecreto) {
+    return (
+      <ResultadoContainer>
+        <h1>😕 Ops!</h1>
+        <p>{erro || 'Link inválido ou sorteio não encontrado'}</p>
+      </ResultadoContainer>
+    );
   }
 
   return (

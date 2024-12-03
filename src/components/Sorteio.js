@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import styled from 'styled-components';
+import { salvarSorteio } from '../services/sorteioService';
 
 const Button = styled.button`
   background-color: #ff6b6b;
@@ -65,12 +66,12 @@ const LinkText = styled.code`
   margin: 8px 0;
 `;
 
-
 function Sorteio() {
   const [participantes, setParticipantes] = useState([]);
   const [resultadoSorteio, setResultadoSorteio] = useState([]);
   const [sorteioRealizado, setSorteioRealizado] = useState(false);
   const [copiado, setCopiado] = useState({});
+  const [salvando, setSalvando] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,23 +79,33 @@ function Sorteio() {
     setParticipantes(participantesArmazenados);
   }, []);
 
-  const realizarSorteioSecreto = () => {
-    const participantesEmbaralhados = [...participantes];
-    for (let i = participantesEmbaralhados.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [participantesEmbaralhados[i], participantesEmbaralhados[j]] = 
-      [participantesEmbaralhados[j], participantesEmbaralhados[i]];
+  const realizarSorteioSecreto = async () => {
+    setSalvando(true);
+    try {
+      const participantesEmbaralhados = [...participantes];
+      for (let i = participantesEmbaralhados.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [participantesEmbaralhados[i], participantesEmbaralhados[j]] = 
+        [participantesEmbaralhados[j], participantesEmbaralhados[i]];
+      }
+
+      const resultado = participantesEmbaralhados.map((participante, index) => ({
+        ...participante,
+        amigoSecreto: participantesEmbaralhados[(index + 1) % participantesEmbaralhados.length],
+        hash: uuidv4()
+      }));
+
+      // Salvar no Firebase
+      await salvarSorteio(resultado);
+      
+      setResultadoSorteio(resultado);
+      setSorteioRealizado(true);
+    } catch (error) {
+      alert('Erro ao realizar o sorteio. Por favor, tente novamente.');
+      console.error(error);
+    } finally {
+      setSalvando(false);
     }
-
-    const resultado = participantesEmbaralhados.map((participante, index) => ({
-      ...participante,
-      amigoSecreto: participantesEmbaralhados[(index + 1) % participantesEmbaralhados.length],
-      hash: uuidv4()
-    }));
-
-    localStorage.setItem('resultadoSorteio', JSON.stringify(resultado));
-    setResultadoSorteio(resultado);
-    setSorteioRealizado(true);
   };
 
   const copiarInformacoes = async (participante, index) => {
@@ -156,8 +167,11 @@ function Sorteio() {
         <div key={index}>{p.nome}</div>
       ))}
 
-      <Button onClick={realizarSorteioSecreto}>
-        Realizar Sorteio Secreto 🎁
+      <Button 
+        onClick={realizarSorteioSecreto} 
+        disabled={salvando}
+      >
+        {salvando ? 'Realizando Sorteio...' : 'Realizar Sorteio Secreto 🎁'}
       </Button>
     </div>
   );
