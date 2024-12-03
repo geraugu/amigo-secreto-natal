@@ -95,7 +95,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 👥 Autor
 
-- [Augusto Gehrke](https://github.com/geraugu)
+- [Geraldo Augusto de Morais Figueiredo](https://github.com/geraugu)
 
 ---
 
