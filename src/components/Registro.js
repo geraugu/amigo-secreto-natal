@@ -119,6 +119,23 @@ const ParticipanteItem = styled.div`
   }
 `;
 
+const TextArea = styled.textarea`
+  width: 100%;
+  padding: 15px;
+  border: 2px solid #4ecdc4;
+  border-radius: 8px;
+  font-size: 16px;
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #ff6b6b;
+  }
+`;
+
 function Registro() {
   const [nome, setNome] = useState('');
   const [participantes, setParticipantes] = useState([]);
@@ -126,6 +143,7 @@ function Registro() {
   const [valorLimite, setValorLimite] = useState('');
   const [regrasPersonalizadas, setRegrasPersonalizadas] = useState('');
   const [carregandoRegras, setCarregandoRegras] = useState(false);
+  const [informacoesAdicionais, setInformacoesAdicionais] = useState('');
   const navigate = useNavigate();
 
   const adicionarParticipante = (e) => {
@@ -141,7 +159,7 @@ function Registro() {
     if (!titulo || !valorLimite) return;
     setCarregandoRegras(true);
     try {
-      const regras = await generateRules(titulo, valorLimite);
+      const regras = await generateRules(titulo, valorLimite, informacoesAdicionais);
       setRegrasPersonalizadas(regras);
     } catch (error) {
       console.error('Erro ao gerar regras:', error);
@@ -180,7 +198,6 @@ function Registro() {
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
           />
-          <HelpText>Dê um nome especial para o seu amigo secreto</HelpText>
         </InputGroup>
 
         <InputGroup>
@@ -195,6 +212,17 @@ function Registro() {
           />
         </InputGroup>
 
+        <InputGroup>
+          <Label htmlFor="info">Informações Adicionais (opcional)</Label>
+          <Input
+            id="info"
+            type="text"
+            placeholder="Ex: Somente para crianças, Não pode bebidas alcoólicas..."
+            value={informacoesAdicionais}
+            onChange={(e) => setInformacoesAdicionais(e.target.value)}
+          />
+        </InputGroup>
+
         <Button 
           type="button" 
           onClick={gerarRegrasPersonalizadas}
@@ -204,9 +232,14 @@ function Registro() {
         </Button>
         
         {regrasPersonalizadas && (
-          <RulesBox>
-            {regrasPersonalizadas}
-          </RulesBox>
+          <InputGroup>
+            <Label htmlFor="regras">Regras Geradas (você pode editar)</Label>
+            <TextArea
+              id="regras"
+              value={regrasPersonalizadas}
+              onChange={(e) => setRegrasPersonalizadas(e.target.value)}
+            />
+          </InputGroup>
         )}
       </ConfigSection>
 
