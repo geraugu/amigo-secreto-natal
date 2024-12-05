@@ -66,17 +66,28 @@ const LinkText = styled.code`
   margin: 8px 0;
 `;
 
+const RulesBox = styled.div`
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+`;
+
 function Sorteio() {
   const [participantes, setParticipantes] = useState([]);
   const [resultadoSorteio, setResultadoSorteio] = useState([]);
   const [sorteioRealizado, setSorteioRealizado] = useState(false);
   const [copiado, setCopiado] = useState({});
   const [salvando, setSalvando] = useState(false);
+  const [dadosSorteio, setDadosSorteio] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const participantesArmazenados = JSON.parse(localStorage.getItem('participantes') || '[]');
-    setParticipantes(participantesArmazenados);
+    const dadosArmazenados = JSON.parse(localStorage.getItem('dadosSorteio') || '{}');
+    if (dadosArmazenados.participantes) {
+      setParticipantes(dadosArmazenados.participantes);
+      setDadosSorteio(dadosArmazenados);
+    }
   }, []);
 
   const realizarSorteioSecreto = async () => {
@@ -96,7 +107,10 @@ function Sorteio() {
       }));
 
       // Salvar no Firebase
-      await salvarSorteio(resultado);
+      await salvarSorteio({
+        ...dadosSorteio,
+        resultados: resultado
+      });
       
       setResultadoSorteio(resultado);
       setSorteioRealizado(true);
@@ -111,13 +125,18 @@ function Sorteio() {
   const copiarInformacoes = async (participante, index) => {
     const baseUrl = window.location.origin + '/amigo-secreto-natal/#';
     const link = `${baseUrl}/resultado/${participante.hash}`;
-    const textoCopiar = `Nome: ${participante.nome}\nLink: ${link}`;
+    let textoCopiar = `🎄 ${dadosSorteio.titulo} 🎅\n\nO amigo secreto do ${participante.nome} é o ${link}\n\n`;
+    
+    if (dadosSorteio.regras) {
+      textoCopiar += `\n📜 Regras do Amigo Secreto:\n`;
+      textoCopiar += `💰 ${parseInt(dadosSorteio.valorLimite) === 0 ? 'Sem limite de valor para o presente' : `Valor máximo: R$ ${dadosSorteio.valorLimite}`}\n\n`;
+      textoCopiar += dadosSorteio.regras;
+    }
     
     try {
       await navigator.clipboard.writeText(textoCopiar);
       setCopiado(prev => ({ ...prev, [index]: true }));
       
-      // Reset do status "Copiado!" após 2 segundos
       setTimeout(() => {
         setCopiado(prev => ({ ...prev, [index]: false }));
       }, 2000);
@@ -131,7 +150,17 @@ function Sorteio() {
     
     return (
       <div>
-        <h1>🎄 Sorteio Realizado com Sucesso! 🎅</h1>
+        <h1>🎄 {dadosSorteio.titulo} 🎅</h1>
+        <h2>Sorteio Realizado com Sucesso!</h2>
+        
+        {dadosSorteio.regras && (
+          <RulesBox>
+            <h3>📜 Regras do Amigo Secreto</h3>
+            <p>💰 {parseInt(dadosSorteio.valorLimite) === 0 ? 'Sem limite de valor para o presente' : `Valor máximo: R$ ${dadosSorteio.valorLimite}`}</p>
+            <p>{dadosSorteio.regras}</p>
+          </RulesBox>
+        )}
+        
         <p>Aqui estão os links para cada participante:</p>
         
         <LinksList>

@@ -4,6 +4,12 @@ Uma aplicação web moderna para organizar sorteios de Amigo Secreto de forma f�
 
 ## 🎯 Funcionalidades
 
+- **Personalização do Evento**
+  - Defina um título personalizado para seu amigo secreto
+  - Configure o valor máximo do presente (ou deixe sem limite)
+  - Gere regras divertidas automaticamente usando IA
+  - Interface moderna e intuitiva
+
 - **Cadastro de Participantes**
   - Adicione participantes apenas com o nome
   - Interface simples e intuitiva
@@ -17,6 +23,7 @@ Uma aplicação web moderna para organizar sorteios de Amigo Secreto de forma f�
 - **Compartilhamento Seguro**
   - Links individuais e únicos para cada participante
   - Botão de cópia rápida para nome e link
+  - Inclui regras e valor do presente no resultado
   - Acesso ao resultado de qualquer dispositivo
 
 - **Armazenamento em Nuvem**
@@ -29,17 +36,22 @@ Uma aplicação web moderna para organizar sorteios de Amigo Secreto de forma f�
 1. **Acesse a Aplicação**
    - Visite: [https://geraugu.github.io/amigo-secreto-natal](https://geraugu.github.io/amigo-secreto-natal)
 
-2. **Cadastre os Participantes**
+2. **Configure seu Amigo Secreto**
+   - Defina um título especial para o evento
+   - Estabeleça um valor máximo para os presentes (opcional)
+   - Gere regras divertidas com um clique
+
+3. **Cadastre os Participantes**
+   - Digite o nome de cada participante
    - Clique em "Adicionar Participante"
-   - Digite o nome do participante
    - Repita para todos os participantes
 
-3. **Realize o Sorteio**
+4. **Realize o Sorteio**
    - Com todos cadastrados, clique em "Realizar Sorteio"
    - Aguarde o processamento
    - Os links serão gerados automaticamente
 
-4. **Compartilhe os Links**
+5. **Compartilhe os Links**
    - Use o botão "Copiar Informações" para cada participante
    - Envie o link individualmente para cada pessoa
    - Cada participante só verá seu próprio amigo secreto
@@ -66,12 +78,13 @@ Uma aplicação web moderna para organizar sorteios de Amigo Secreto de forma f�
    npm start
    ```
 
-## 💻 Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
 - React.js
 - Firebase (Firestore)
 - React Router
 - Styled Components
+- Google Gemini API
 - GitHub Pages
 
 ## 🔒 Privacidade e Segurança

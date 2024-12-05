@@ -18,6 +18,10 @@ const AmigoSecreto = styled.div`
   margin-top: 20px;
 `;
 
+const RulesSection = styled.div`
+  margin-top: 20px;
+`;
+
 const LoadingMessage = styled.div`
   color: #666;
   margin: 20px 0;
@@ -27,6 +31,7 @@ function ResultadoAmigo() {
   const [amigoSecreto, setAmigoSecreto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState(null);
+  const [dadosSorteio, setDadosSorteio] = useState(null);
   const { hash } = useParams();
 
   useEffect(() => {
@@ -35,6 +40,7 @@ function ResultadoAmigo() {
         const resultado = await buscarResultadoPorHash(hash);
         if (resultado) {
           setAmigoSecreto(resultado.amigoSecreto);
+          setDadosSorteio(resultado.dadosSorteio);
         } else {
           setErro('Resultado não encontrado');
         }
@@ -68,11 +74,19 @@ function ResultadoAmigo() {
 
   return (
     <ResultadoContainer>
-      <h1>🎄 Seu Amigo Secreto 🎅</h1>
+      <h1>🎄 {dadosSorteio?.titulo || 'Amigo Secreto'} 🎅</h1>
       <AmigoSecreto>
         <h2>Seu amigo secreto é:</h2>
         <p>{amigoSecreto.nome}</p>
       </AmigoSecreto>
+
+      {dadosSorteio?.regras && (
+        <RulesSection>
+          <h3>📜 Regras do Amigo Secreto</h3>
+          <p>💰 Valor máximo: R$ {dadosSorteio.valorLimite}</p>
+          <p>{dadosSorteio.regras}</p>
+        </RulesSection>
+      )}
     </ResultadoContainer>
   );
 }
