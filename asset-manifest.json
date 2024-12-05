@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/amigo-secreto-natal/static/css/main.e6c13ad2.css",
-    "main.js": "/amigo-secreto-natal/static/js/main.fd0cc5cf.js",
+    "main.js": "/amigo-secreto-natal/static/js/main.a2d92688.js",
     "static/js/453.2759870e.chunk.js": "/amigo-secreto-natal/static/js/453.2759870e.chunk.js",
     "index.html": "/amigo-secreto-natal/index.html",
     "main.e6c13ad2.css.map": "/amigo-secreto-natal/static/css/main.e6c13ad2.css.map",
-    "main.fd0cc5cf.js.map": "/amigo-secreto-natal/static/js/main.fd0cc5cf.js.map",
+    "main.a2d92688.js.map": "/amigo-secreto-natal/static/js/main.a2d92688.js.map",
     "453.2759870e.chunk.js.map": "/amigo-secreto-natal/static/js/453.2759870e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.fd0cc5cf.js"
+    "static/js/main.a2d92688.js"
   ]
 }
