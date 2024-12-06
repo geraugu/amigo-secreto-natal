@@ -1,12 +1,12 @@
 import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 
-export const salvarSorteio = async (resultadoSorteio) => {
+export const salvarSorteio = async (dadosSorteio) => {
   try {
     const sorteiosRef = collection(db, 'sorteios');
     const docRef = await addDoc(sorteiosRef, {
       data: new Date(),
-      resultados: resultadoSorteio
+      ...dadosSorteio
     });
     return docRef.id;
   } catch (error) {
@@ -23,9 +23,18 @@ export const buscarResultadoPorHash = async (hash) => {
     let resultado = null;
     querySnapshot.forEach((doc) => {
       const sorteio = doc.data();
-      const participante = sorteio.resultados.find(p => p.hash === hash);
-      if (participante) {
-        resultado = participante;
+      if (sorteio.resultados && Array.isArray(sorteio.resultados)) {
+        const participante = sorteio.resultados.find(p => p.hash === hash);
+        if (participante) {
+          resultado = {
+            amigoSecreto: participante.amigoSecreto.nome,
+            dadosSorteio: {
+              titulo: sorteio.titulo,
+              valorLimite: sorteio.valorLimite,
+              regras: sorteio.regras
+            }
+          };
+        }
       }
     });
     

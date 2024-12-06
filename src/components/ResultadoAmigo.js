@@ -20,6 +20,23 @@ const AmigoSecreto = styled.div`
 
 const RulesSection = styled.div`
   margin-top: 20px;
+  white-space: pre-line;
+  text-align: left;
+  padding: 15px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h3 {
+    text-align: center;
+    color: #4ecdc4;
+    margin-bottom: 15px;
+  }
+
+  p {
+    margin: 10px 0;
+    line-height: 1.5;
+  }
 `;
 
 const LoadingMessage = styled.div`
@@ -77,13 +94,15 @@ function ResultadoAmigo() {
       <h1>🎄 {dadosSorteio?.titulo || 'Amigo Secreto'} 🎅</h1>
       <AmigoSecreto>
         <h2>Seu amigo secreto é:</h2>
-        <p>{amigoSecreto.nome}</p>
+        <p>{amigoSecreto}</p>
       </AmigoSecreto>
 
       {dadosSorteio?.regras && (
         <RulesSection>
           <h3>📜 Regras do Amigo Secreto</h3>
-          <p>💰 Valor máximo: R$ {dadosSorteio.valorLimite}</p>
+          <p>💰 {parseInt(dadosSorteio.valorLimite) === 0 
+            ? 'Sem limite de valor para o presente' 
+            : `Valor máximo: R$ ${dadosSorteio.valorLimite}`}</p>
           <p>{dadosSorteio.regras}</p>
         </RulesSection>
       )}
