@@ -1,138 +1,43 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { generateRules } from '../services/geminiService';
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-top: 30px;
-`;
-
-const Input = styled.input`
-  padding: 15px;
-  border: 2px solid #4ecdc4;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: #ff6b6b;
-  }
-`;
-
-const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-const Label = styled.label`
-  font-size: 16px;
-  color: #2c3e50;
-  font-weight: 500;
-`;
+import {
+  Container,
+  Title,
+  SubTitle,
+  Section,
+  InputGroup,
+  Input,
+  TextArea,
+  Button,
+  ListContainer,
+  ListItem,
+  InfoBox,
+  LoadingSpinner
+} from '../styles/Components';
+import styled from 'styled-components';
 
 const HelpText = styled.span`
-  font-size: 14px;
-  color: #666;
+  font-size: 0.85rem;
+  color: #999;
   margin-top: 4px;
+  display: block;
 `;
 
-const Button = styled.button`
-  background-color: #ff6b6b;
+const RemoveButton = styled.button`
+  background: #e74c3c;
   color: white;
   border: none;
-  padding: 15px;
+  padding: 8px 16px;
   border-radius: 8px;
-  font-size: 18px;
+  font-size: 0.85rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
+  transition: all 0.2s;
+  font-weight: 600;
 
   &:hover {
-    background-color: #4ecdc4;
-    transform: translateY(-2px);
-  }
-
-  &:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-    transform: none;
-  }
-`;
-
-const ParticipantesList = styled.div`
-  margin-top: 30px;
-  text-align: left;
-  background-color: #f5f5f5;
-  padding: 20px;
-  border-radius: 8px;
-`;
-
-const ConfigSection = styled.div`
-  margin: 30px 0;
-  padding: 25px;
-  background-color: #f8f9fa;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-
-  h2 {
-    color: #2c3e50;
-    margin-bottom: 20px;
-    font-size: 1.5em;
-  }
-`;
-
-const RulesBox = styled.div`
-  margin-top: 20px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  border-left: 4px solid #4ecdc4;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  line-height: 1.6;
-`;
-
-const MainTitle = styled.h1`
-  color: #2c3e50;
-  font-size: 2.5em;
-  margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-`;
-
-const ParticipanteItem = styled.div`
-  background-color: white;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  &:before {
-    content: "🎁";
-    font-size: 1.2em;
-  }
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  padding: 15px;
-  border: 2px solid #4ecdc4;
-  border-radius: 8px;
-  font-size: 16px;
-  min-height: 100px;
-  resize: vertical;
-  font-family: inherit;
-  transition: border-color 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: #ff6b6b;
+    background: #c0392b;
+    transform: scale(1.05);
   }
 `;
 
@@ -148,49 +53,60 @@ function Registro() {
 
   const adicionarParticipante = (e) => {
     e.preventDefault();
-    if (nome) {
-      const novoParticipante = { nome };
+    if (nome.trim()) {
+      const novoParticipante = { nome: nome.trim() };
       setParticipantes([...participantes, novoParticipante]);
       setNome('');
     }
   };
 
+  const removerParticipante = (index) => {
+    setParticipantes(participantes.filter((_, i) => i !== index));
+  };
+
   const gerarRegrasPersonalizadas = async () => {
-    if (!titulo || !valorLimite) return;
+    if (!titulo || valorLimite === '') {
+      alert('Por favor, preencha o título e o valor limite antes de gerar as regras.');
+      return;
+    }
     setCarregandoRegras(true);
     try {
       const regras = await generateRules(titulo, valorLimite, informacoesAdicionais);
       setRegrasPersonalizadas(regras);
     } catch (error) {
       console.error('Erro ao gerar regras:', error);
+      alert('Erro ao gerar regras. Tente novamente.');
     } finally {
       setCarregandoRegras(false);
     }
   };
 
   const realizarSorteio = () => {
-    if (participantes.length >= 2) {
-      const dadosSorteio = {
-        titulo,
-        valorLimite,
-        regras: regrasPersonalizadas,
-        participantes
-      };
-      localStorage.setItem('dadosSorteio', JSON.stringify(dadosSorteio));
-      navigate('/sorteio');
-    } else {
-      alert('Adicione pelo menos 2 participantes');
+    if (participantes.length < 2) {
+      alert('Adicione pelo menos 2 participantes para realizar o sorteio.');
+      return;
     }
+
+    const dadosSorteio = {
+      titulo,
+      valorLimite,
+      regras: regrasPersonalizadas,
+      participantes
+    };
+    localStorage.setItem('dadosSorteio', JSON.stringify(dadosSorteio));
+    navigate('/sorteio');
   };
 
   return (
-    <div>
-      <MainTitle>🎄 {titulo} 🎅</MainTitle>
-      
-      <ConfigSection>
-        <h2>Configurações do Amigo Secreto</h2>
+    <Container>
+      <Title>🎄 {titulo} 🎅</Title>
+      <SubTitle>Configure seu amigo secreto de forma fácil e divertida!</SubTitle>
+
+      <Section>
+        <SubTitle>⚙️ Configurações do Evento</SubTitle>
+
         <InputGroup>
-          <Label htmlFor="titulo">Título do Evento</Label>
+          <label htmlFor="titulo">Título do Evento</label>
           <Input
             id="titulo"
             type="text"
@@ -201,81 +117,106 @@ function Registro() {
         </InputGroup>
 
         <InputGroup>
-          <Label htmlFor="valor">Valor Máximo do Presente</Label>
+          <label htmlFor="valor">Valor Máximo do Presente (R$)</label>
           <Input
             id="valor"
             type="number"
-            placeholder="Digite 0 se não quiser estabelecer um limite de valor"
+            placeholder="Digite 0 para sem limite"
             value={valorLimite}
             onChange={(e) => setValorLimite(e.target.value)}
             min="0"
           />
+          <HelpText>Digite 0 se não quiser estabelecer um limite de valor</HelpText>
         </InputGroup>
 
         <InputGroup>
-          <Label htmlFor="info">Informações Adicionais (opcional)</Label>
+          <label htmlFor="info">Informações Adicionais (opcional)</label>
           <Input
             id="info"
             type="text"
-            placeholder="Ex: Somente para crianças, Não pode bebidas alcoólicas..."
+            placeholder="Ex: Somente para adultos, Evitar bebidas alcoólicas..."
             value={informacoesAdicionais}
             onChange={(e) => setInformacoesAdicionais(e.target.value)}
           />
+          <HelpText>Adicione orientações especiais para o sorteio</HelpText>
         </InputGroup>
 
-        <Button 
-          type="button" 
+        <Button
+          type="button"
           onClick={gerarRegrasPersonalizadas}
           disabled={carregandoRegras}
+          secondary
         >
-          {carregandoRegras ? '✨ Gerando regras...' : '✨ Gerar Regras Divertidas'}
+          {carregandoRegras ? '⏳ Gerando...' : '✨ Gerar Regras com IA'}
         </Button>
-        
+
+        {carregandoRegras && <LoadingSpinner />}
+
         {regrasPersonalizadas && (
           <InputGroup>
-            <Label htmlFor="regras">Regras Geradas (você pode editar)</Label>
+            <label htmlFor="regras">Regras Geradas (você pode editar)</label>
             <TextArea
               id="regras"
               value={regrasPersonalizadas}
               onChange={(e) => setRegrasPersonalizadas(e.target.value)}
+              placeholder="As regras geradas aparecerão aqui..."
             />
           </InputGroup>
         )}
-      </ConfigSection>
+      </Section>
 
-      <Form onSubmit={adicionarParticipante}>
-        <InputGroup>
-          <Label htmlFor="nome">Nome do Participante</Label>
-          <Input 
-            id="nome"
-            type="text" 
-            placeholder="Ex: João" 
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-            required
-          />
-          <HelpText>Digite o nome do participante</HelpText>
-        </InputGroup>
-        <Button type="submit">🎁 Adicionar Participante</Button>
-      </Form>
+      <Section>
+        <SubTitle>👥 Participantes</SubTitle>
 
-      {participantes.length > 0 && (
-        <ParticipantesList>
-          <h2>Participantes Cadastrados:</h2>
-          {participantes.map((p, index) => (
-            <ParticipanteItem key={index}>
-              {p.nome}
-            </ParticipanteItem>
-          ))}
-        </ParticipantesList>
-      )}
+        {participantes.length === 0 && (
+          <InfoBox>
+            Adicione pelo menos 2 participantes para realizar o sorteio
+          </InfoBox>
+        )}
+
+        <form onSubmit={adicionarParticipante}>
+          <InputGroup>
+            <label htmlFor="nome">Nome do Participante</label>
+            <Input
+              id="nome"
+              type="text"
+              placeholder="Ex: João Silva"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+            />
+          </InputGroup>
+          <Button type="submit">🎁 Adicionar Participante</Button>
+        </form>
+
+        {participantes.length > 0 && (
+          <>
+            <SubTitle style={{ marginTop: '30px', fontSize: '1rem' }}>
+              {participantes.length} Participante{participantes.length !== 1 ? 's' : ''} Cadastrado{participantes.length !== 1 ? 's' : ''}
+            </SubTitle>
+            <ListContainer>
+              {participantes.map((p, index) => (
+                <ListItem key={index}>
+                  <div className="participant-name">
+                    <span className="icon">🎁</span>
+                    {p.nome}
+                  </div>
+                  <RemoveButton onClick={() => removerParticipante(index)}>
+                    🗑️ Remover
+                  </RemoveButton>
+                </ListItem>
+              ))}
+            </ListContainer>
+          </>
+        )}
+      </Section>
 
       {participantes.length >= 2 && (
-        <Button onClick={realizarSorteio}>
-          🎲 Realizar Sorteio
+        <Button onClick={realizarSorteio} success>
+          🎲 Realizar Sorteio Agora!
         </Button>
       )}
-    </div>
+    </Container>
   );
 }
 
