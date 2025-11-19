@@ -34,7 +34,7 @@ Uma aplicação web moderna para organizar sorteios de Amigo Secreto de forma f�
 ## 🚀 Como Usar
 
 1. **Acesse a Aplicação**
-   - Visite: [https://geraugu.github.io/amigo-secreto-natal](https://geraugu.github.io/amigo-secreto-natal)
+   - Visite: [https://amigosecreto-2e997.web.app](https://amigosecreto-2e997.web.app)
 
 2. **Configure seu Amigo Secreto**
    - Defina um título especial para o evento
@@ -71,21 +71,31 @@ Uma aplicação web moderna para organizar sorteios de Amigo Secreto de forma f�
 
 3. Configure as variáveis de ambiente
    - Copie o arquivo `.env.example` para `.env`
-   - Preencha as variáveis com suas credenciais do Firebase
+   - Preencha com suas credenciais:
+     - Firebase config (apiKey, authDomain, etc.)
+     - Google Gemini API Key
 
 4. Execute o projeto
    ```bash
    npm start
    ```
 
+5. Para fazer deploy no Firebase
+   ```bash
+   npm run build
+   firebase deploy
+   ```
+
 ## 🛠️ Tecnologias Utilizadas
 
-- React.js
-- Firebase (Firestore)
-- React Router
-- Styled Components
-- Google Gemini API
-- GitHub Pages
+- **React.js** - Framework JavaScript
+- **Firebase** - Backend e Hosting
+  - Firestore - Banco de dados NoSQL
+  - Firebase Hosting - Hospedagem da aplicação
+- **React Router** - Navegação entre páginas
+- **Styled Components** - Estilização CSS-in-JS
+- **Google Gemini AI** (gemini-2.5-flash) - Geração de regras com IA
+- **UUID** - Geração de identificadores únicos
 
 ## 🔒 Privacidade e Segurança
 
@@ -93,6 +103,17 @@ Uma aplicação web moderna para organizar sorteios de Amigo Secreto de forma f�
 - Links únicos e seguros
 - Sem necessidade de login
 - Dados protegidos no Firebase
+
+## 🆕 Atualizações Recentes
+
+### v1.1.0 (Nov 2025)
+- ✨ **Migração para novo SDK da Google**: Atualizado de `@google/generative-ai` para `@google/genai` (v1.30.0)
+- 🤖 **Modelo de IA atualizado**: Usando `gemini-2.5-flash` para melhor performance
+- 💬 **Formatação para WhatsApp**: Texto gerado otimizado para compartilhamento no WhatsApp
+- 🔧 **Correções**:
+  - Corrigido problema de deploy no Firebase Hosting
+  - Atualizadas regras de segurança do Firestore
+  - Melhorada limpeza de formatação markdown no texto copiado
 
 ## 🤝 Como Contribuir
 

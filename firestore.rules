@@ -1,0 +1,23 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Regras para a coleção de sorteios de amigo secreto
+    match /sorteios/{sorteioId} {
+      // Permitir leitura e escrita para todos (sem autenticação)
+      // Em produção, considere adicionar validações mais restritivas
+      allow read, write: if true;
+
+      // Permitir acesso aos documentos de participantes
+      match /participantes/{participanteId} {
+        allow read, write: if true;
+      }
+    }
+
+    // Regra padrão para outras coleções
+    match /{document=**} {
+      allow read, write: if request.time < timestamp.date(2026, 12, 31);
+    }
+  }
+}

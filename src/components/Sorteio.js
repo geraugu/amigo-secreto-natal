@@ -125,12 +125,33 @@ function Sorteio() {
   const copiarInformacoes = async (participante, index) => {
     const baseUrl = window.location.origin + '/amigo-secreto-natal/#';
     const link = `${baseUrl}/resultado/${participante.hash}`;
-    let textoCopiar = `🎄 ${dadosSorteio.titulo} 🎅\n\nO amigo secreto do ${participante.nome} é o ${link}\n\n`;
-    
+
+    // Função para limpar markdown e converter para formatação do WhatsApp
+    const limparFormatacao = (texto) => {
+      if (!texto) return '';
+
+      return texto
+        // Remove ## (títulos)
+        .replace(/^#{1,6}\s+/gm, '')
+        // Converte **negrito** para *negrito* (WhatsApp)
+        .replace(/\*\*(.*?)\*\*/g, '*$1*')
+        // Converte __negrito__ para *negrito*
+        .replace(/__(.*?)__/g, '*$1*')
+        // Remove formatação de código `code`
+        .replace(/`(.*?)`/g, '$1')
+        // Remove links markdown [texto](url) deixando só o texto
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+        // Limpa múltiplas quebras de linha
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
+    };
+
+    let textoCopiar = `🎄 *${dadosSorteio.titulo}* 🎅\n\nO amigo secreto do *${participante.nome}* é o ${link}\n\n`;
+
     if (dadosSorteio.regras) {
-      textoCopiar += `\n📜 Regras do Amigo Secreto:\n`;
+      textoCopiar += `📜 *Regras do Amigo Secreto:*\n`;
       textoCopiar += `💰 ${parseInt(dadosSorteio.valorLimite) === 0 ? 'Sem limite de valor para o presente' : `Valor máximo: R$ ${dadosSorteio.valorLimite}`}\n\n`;
-      textoCopiar += dadosSorteio.regras;
+      textoCopiar += limparFormatacao(dadosSorteio.regras);
     }
     
     try {
